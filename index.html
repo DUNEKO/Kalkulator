@@ -230,22 +230,22 @@
 
         function calculateOcieplenieScian(metraz, poziom) {
             if (poziom === 'najnizszy') {
-                if (metraz <= 130) return metraz * 300;
-                else if (metraz <= 190) return metraz * 250;
-                else if (metraz <= 300) return metraz * 200;
-                else return metraz * 180;
+                if (metraz <= 130) return metraz * 382;
+                else if (metraz <= 190) return metraz * 248;
+                else if (metraz <= 300) return metraz * 197;
+                else return metraz * 160;
             } else if (poziom === 'podwyzszony') {
-                if (metraz <= 150) return metraz * 350;
-                else if (metraz <= 200) return metraz * 300;
-                else if (metraz <= 350) return metraz * 250;
-                else return metraz * 200;
-            } else if (poziom === 'najwyzszy') {
                 if (metraz <= 150) return metraz * 400;
-                else if (metraz <= 200) return metraz * 350;
-                else if (metraz <= 250) return metraz * 300;
-                else if (metraz <= 300) return metraz * 250;
-                else if (metraz <= 400) return metraz * 220;
-                else return metraz * 200;
+                else if (metraz <= 200) return metraz * 300;
+                else if (metraz <= 350) return metraz * 220;
+                else return metraz * 180;
+            } else if (poziom === 'najwyzszy') {
+                if (metraz <= 150) return metraz * 461,12;
+                else if (metraz <= 200) return metraz * 328,6;
+                else if (metraz <= 250) return metraz * 290;
+                else if (metraz <= 300) return metraz * 240;
+                else if (metraz <= 400) return metraz * 193;
+                else return metraz * 180;
             }
         }
 
