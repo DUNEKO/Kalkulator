@@ -66,6 +66,10 @@
                 <option value="podwyzszony">Podwyższony</option>
                 <option value="najwyzszy">Najwyższy</option>
             </select>
+
+            <!-- Pole na wynik dla tego wiersza -->
+            <label for="wynik-0">Wynik dla wiersza:</label>
+            <input type="text" id="wynik-0" name="wynik" readonly>
         </div>
     </div>
 
@@ -74,7 +78,7 @@
         <span id="addRow">+</span>
     </div>
 
-    <!-- Okienko z wynikiem -->
+    <!-- Okienko z wynikiem sumarycznym -->
     <div class="result-container">
         <label for="wynik">Wynik:</label>
         <input type="text" id="wynik" name="wynik" readonly>  
@@ -159,162 +163,85 @@
                     <input type="number" id="drzwi-ilosc-${rowCount}" placeholder="Podaj ilość drzwi">
                 </div>
 
-                <label for="poziom-${rowCount}">Poziom jakości:</label>
+                <label for="poziom-${rowCount}">Poziom dotacji:</label>
                 <select id="poziom-${rowCount}" name="poziom">
                     <option value="">-- Wybierz poziom --</option>
                     <option value="najnizszy">Najniższy</option>
                     <option value="podwyzszony">Podwyższony</option>
                     <option value="najwyzszy">Najwyższy</option>
                 </select>
-            `;
 
+                <!-- Pole na wynik dla tego wiersza -->
+                <label for="wynik-${rowCount}">Wynik dla wiersza:</label>
+                <input type="text" id="wynik-${rowCount}" name="wynik" readonly>
+            `;
             formRows.appendChild(newRow);
             rowCount++;
         });
 
-         // Funkcja do usuwania wiersza
-         function removeRow(rowId) {
+        // Funkcja do usuwania wiersza
+        function removeRow(rowId) {
             const row = document.getElementById(`row-${rowId}`);
             if (row) {
                 row.remove();
-                // Odejmowanie wartości usuniętego wiersza od sumy
-                if (rowValues[rowId]) {
-                    totalSum -= rowValues[rowId];
-                    document.getElementById('wynik').value = totalSum.toFixed(2);
-                }
+                // Usuń wynik z rowValues
+                delete rowValues[rowId];
+                // Przelicz sumę po usunięciu wiersza
+                calculateTotalSum();
             }
         }
 
-        // Funkcje obliczeń dla ocieplenia stropu, dachu i ścian
-        function calculateOcieplenieStropu(metraz, poziom) {
-            if (poziom === 'najnizszy') {
-                if (metraz <= 130) return metraz * 382;
-                else if (metraz <= 190) return metraz * 248;
-                else if (metraz <= 300) return metraz * 197;
-                else return metraz * 160;
-            } else if (poziom === 'podwyzszony') {
-                if (metraz <= 150) return metraz * 400;
-                else if (metraz <= 200) return metraz * 300;
-                else if (metraz <= 350) return metraz * 220;
-                else return metraz * 180;
-            } else if (poziom === 'najwyzszy') {
-                if (metraz <= 150) return metraz * 461.12;
-                else if (metraz <= 200) return metraz * 328.6;
-                else if (metraz <= 250) return metraz * 290;
-                else if (metraz <= 300) return metraz * 240;
-                else if (metraz <= 400) return metraz * 193;
-                else return metraz * 180;
-            }
-        }
-
-        function calculateOcieplenieDachu(metraz, poziom) {
-            if (poziom === 'najnizszy') {
-                if (metraz <= 130) return metraz * 500;
-                else if (metraz <= 190) return metraz * 350;
-                else if (metraz <= 300) return metraz * 300;
-                else return metraz * 250;
-            } else if (poziom === 'podwyzszony') {
-                if (metraz <= 150) return metraz * 600;
-                else if (metraz <= 200) return metraz * 450;
-                else if (metraz <= 350) return metraz * 400;
-                else return metraz * 300;
-            } else if (poziom === 'najwyzszy') {
-                if (metraz <= 150) return metraz * 700;
-                else if (metraz <= 200) return metraz * 550;
-                else if (metraz <= 250) return metraz * 500;
-                else if (metraz <= 300) return metraz * 450;
-                else if (metraz <= 400) return metraz * 400;
-                else return metraz * 350;
-            }
-        }
-
-        function calculateOcieplenieScian(metraz, poziom) {
-            if (poziom === 'najnizszy') {
-                if (metraz <= 130) return metraz * 382;
-                else if (metraz <= 190) return metraz * 248;
-                else if (metraz <= 300) return metraz * 197;
-                else return metraz * 160;
-            } else if (poziom === 'podwyzszony') {
-                if (metraz <= 150) return metraz * 400;
-                else if (metraz <= 200) return metraz * 300;
-                else if (metraz <= 350) return metraz * 220;
-                else return metraz * 180;
-            } else if (poziom === 'najwyzszy') {
-                if (metraz <= 150) return metraz * 461,12;
-                else if (metraz <= 200) return metraz * 328,6;
-                else if (metraz <= 250) return metraz * 290;
-                else if (metraz <= 300) return metraz * 240;
-                else if (metraz <= 400) return metraz * 193;
-                else return metraz * 180;
-            }
-        }
-
-        // Funkcja obliczająca wynik dla okien
-        function calculateOkna(ilosc, typ, poziom) {
-            let wynik = 0;
-            if (typ === 'pojedyncze') {
-                if (poziom === 'najnizszy') wynik = ilosc * 744;
-                else if (poziom === 'podwyzszony') wynik = ilosc * 806;
-                else if (poziom === 'najwyzszy') wynik = ilosc * 930;
-            } else if (typ === 'podwojne') {
-                if (poziom === 'najnizszy') wynik = ilosc * 1975.2;
-                else if (poziom === 'podwyzszony') wynik = ilosc * 2139.8;
-                else if (poziom === 'najwyzszy') wynik = ilosc * 2469;
-            } else if (typ === 'potrojne') {
-                if (poziom === 'najnizszy') wynik = ilosc * 1800;
-                else if (poziom === 'podwyzszony') wynik = ilosc * 1950;
-                else if (poziom === 'najwyzszy') wynik = ilosc * 2250;
-            }
-            return wynik;
-        }
-
-        // Funkcja obliczająca wynik dla drzwi
-        function calculateDrzwi(ilosc, poziom) {
-            let wynik = 0;
-            if (poziom === 'najnizszy') wynik = ilosc * 4800;
-            else if (poziom === 'podwyzszony') wynik = ilosc * 5200;
-            else if (poziom === 'najwyzszy') wynik = ilosc * 6000;
-            return wynik;
-        }
-
-        // Funkcja do przeliczania wszystkich wierszy
+        // Funkcja do obliczania wartości dla każdego wiersza
         function calculateAll() {
-            totalSum = 0;
-
             for (let i = 0; i < rowCount; i++) {
-                const usluga = document.getElementById(`usluga-${i}`);
-                const metraz = document.getElementById(`metraz-${i}`);
-                const poziom = document.getElementById(`poziom-${i}`);
-                const oknaTyp = document.getElementById(`okna-typ-${i}`);
-                const oknaIlosc = document.getElementById(`okna-ilosc-${i}`);
-                const drzwiIlosc = document.getElementById(`drzwi-ilosc-${i}`);
+                const usluga = document.getElementById(`usluga-${i}`)?.value;
+                const metraz = document.getElementById(`metraz-${i}`)?.value;
+                const oknaIlosc = document.getElementById(`okna-ilosc-${i}`)?.value;
+                const drzwiIlosc = document.getElementById(`drzwi-ilosc-${i}`)?.value;
+                const poziom = document.getElementById(`poziom-${i}`)?.value;
 
-                if (usluga && usluga.value && poziom && poziom.value) {
-                    let wynik = 0;
+                if (usluga) {
+                    let result = 0;
 
-                    if (usluga.value === 'ocieplenie_stropu' && metraz && metraz.value) {
-                        wynik = calculateOcieplenieStropu(parseFloat(metraz.value), poziom.value);
-                    } else if (usluga.value === 'ocieplenie_dachu' && metraz && metraz.value) {
-                        wynik = calculateOcieplenieDachu(parseFloat(metraz.value), poziom.value);
-                    } else if (usluga.value === 'ocieplenie_scian' && metraz && metraz.value) {
-                        wynik = calculateOcieplenieScian(parseFloat(metraz.value), poziom.value);
-                    } else if (usluga.value === 'okna' && oknaTyp && oknaTyp.value && oknaIlosc && oknaIlosc.value) {
-                        wynik = calculateOkna(parseInt(oknaIlosc.value), oknaTyp.value, poziom.value);
-                    } else if (usluga.value === 'drzwi' && drzwiIlosc && drzwiIlosc.value) {
-                        wynik = calculateDrzwi(parseInt(drzwiIlosc.value), poziom.value);
+                    switch (usluga) {
+                        case 'ocieplenie_stropu':
+                        case 'ocieplenie_dachu':
+                        case 'ocieplenie_scian':
+                            result = metraz ? metraz * 100 : 0;
+                            break;
+                        case 'okna':
+                            result = oknaIlosc ? oknaIlosc * 200 : 0;
+                            break;
+                        case 'drzwi':
+                            result = drzwiIlosc ? drzwiIlosc * 500 : 0;
+                            break;
+                        default:
+                            result = 0;
                     }
 
-                    // Aktualizowanie wartości dla danego wiersza i sumy
-                    if (wynik) {
-                        rowValues[i] = wynik;
-                        totalSum += wynik;
+                    // Uwzględnienie poziomu dotacji
+                    if (poziom === 'podwyzszony') {
+                        result *= 0.8;
+                    } else if (poziom === 'najwyzszy') {
+                        result *= 0.5;
                     }
+
+                    // Zapisz wynik dla tego wiersza i zaktualizuj pole
+                    document.getElementById(`wynik-${i}`).value = result.toFixed(2);
+                    rowValues[i] = result;
                 }
             }
 
+            // Oblicz sumaryczną wartość dla wszystkich wierszy
+            calculateTotalSum();
+        }
+
+        // Funkcja do obliczania całkowitej sumy
+        function calculateTotalSum() {
+            totalSum = Object.values(rowValues).reduce((acc, curr) => acc + curr, 0);
             document.getElementById('wynik').value = totalSum.toFixed(2);
         }
     </script>
-
 </body>
 </html>
+
