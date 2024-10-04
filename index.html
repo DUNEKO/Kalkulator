@@ -57,15 +57,6 @@
                 <label for="drzwi-ilosc-0">Ilość drzwi:</label>
                 <input type="number" id="drzwi-ilosc-0" placeholder="Podaj ilość drzwi">
             </div>
-
-            <!-- Poziom jakości -->
-            <label for="poziom-0">Poziom dotacji:</label>
-            <select id="poziom-0" name="poziom">
-                <option value="">-- Wybierz poziom --</option>
-                <option value="najnizszy">Najniższy</option>
-                <option value="podwyzszony">Podwyższony</option>
-                <option value="najwyzszy">Najwyższy</option>
-            </select>
         </div>
     </div>
 
@@ -158,14 +149,6 @@
                     <label for="drzwi-ilosc-${rowCount}">Ilość drzwi:</label>
                     <input type="number" id="drzwi-ilosc-${rowCount}" placeholder="Podaj ilość drzwi">
                 </div>
-
-                <label for="poziom-${rowCount}">Poziom jakości:</label>
-                <select id="poziom-${rowCount}" name="poziom">
-                    <option value="">-- Wybierz poziom --</option>
-                    <option value="najnizszy">Najniższy</option>
-                    <option value="podwyzszony">Podwyższony</option>
-                    <option value="najwyzszy">Najwyższy</option>
-                </select>
             `;
 
             formRows.appendChild(newRow);
@@ -191,94 +174,35 @@
 
 
         
-        function calculateOcieplenieStropu(metraz, poziom) {
-            if (poziom === 'najnizszy') {
-                if (metraz <= 130) return metraz * 382;
-                else if (metraz <= 190) return metraz * 248;
-                else if (metraz <= 300) return metraz * 197;
-                else return metraz * 160;
-            } else if (poziom === 'podwyzszony') {
-                if (metraz <= 150) return metraz * 400;
-                else if (metraz <= 200) return metraz * 300;
-                else if (metraz <= 350) return metraz * 220;
-                else return metraz * 180;
-            } else if (poziom === 'najwyzszy') {
-                if (metraz <= 150) return metraz * 461.12;
-                else if (metraz <= 200) return metraz * 328.6;
-                else if (metraz <= 250) return metraz * 290;
-                else if (metraz <= 300) return metraz * 240;
-                else if (metraz <= 400) return metraz * 193;
-                else return metraz * 180;
-            }
+        function calculateOcieplenieStropu(metraz) {
+            return metraz * 130;
         }
 
-        function calculateOcieplenieDachu(metraz, poziom) {
-            if (poziom === 'najnizszy') {
-                if (metraz <= 130) return metraz * 500;
-                else if (metraz <= 190) return metraz * 350;
-                else if (metraz <= 300) return metraz * 400;
-                else return metraz * 250;
-            } else if (poziom === 'podwyzszony') {
-                if (metraz <= 150) return metraz * 600;
-                else if (metraz <= 200) return metraz * 450;
-                else if (metraz <= 350) return metraz * 400;
-                else return metraz * 300;
-            } else if (poziom === 'najwyzszy') {
-                if (metraz <= 150) return metraz * 700;
-                else if (metraz <= 200) return metraz * 550;
-                else if (metraz <= 250) return metraz * 500;
-                else if (metraz <= 300) return metraz * 450;
-                else if (metraz <= 400) return metraz * 400;
-                else return metraz * 350;
-            }
+        function calculateOcieplenieDachu(metraz) {
+            return metraz * 250;
         }
 
-        function calculateOcieplenieScian(metraz, poziom) {
-            if (poziom === 'najnizszy') {
-                if (metraz <= 130) return metraz * 382;
-                else if (metraz <= 190) return metraz * 248;
-                else if (metraz <= 300) return metraz * 197;
-                else return metraz * 160;
-            } else if (poziom === 'podwyzszony') {
-                if (metraz <= 150) return metraz * 400;
-                else if (metraz <= 200) return metraz * 300;
-                else if (metraz <= 350) return metraz * 220;
-                else return metraz * 180;
-            } else if (poziom === 'najwyzszy') {
-                if (metraz <= 150) return metraz * 461,12;
-                else if (metraz <= 200) return metraz * 328,6;
-                else if (metraz <= 250) return metraz * 290;
-                else if (metraz <= 300) return metraz * 240;
-                else if (metraz <= 400) return metraz * 193;
-                else return metraz * 180;
-            }
+        function calculateOcieplenieScian(metraz) {
+            return metraz * 270;
         }
 
         // Funkcja obliczająca wynik dla okien
-        function calculateOkna(ilosc, typ, poziom) {
+        function calculateOkna(ilosc, typ) {
             let wynik = 0;
             if (typ === 'pojedyncze') {
-                if (poziom === 'najnizszy') wynik = ilosc * 744;
-                else if (poziom === 'podwyzszony') wynik = ilosc * 806;
-                else if (poziom === 'najwyzszy') wynik = ilosc * 930;
+                wynik = ilosc * 827;
             } else if (typ === 'podwojne') {
-                if (poziom === 'najnizszy') wynik = ilosc * 1975.2;
-                else if (poziom === 'podwyzszony') wynik = ilosc * 2139.8;
-                else if (poziom === 'najwyzszy') wynik = ilosc * 2469;
+                wynik = ilosc * 2195;
             } else if (typ === 'potrojne') {
-                if (poziom === 'najnizszy') wynik = ilosc * 1800;
-                else if (poziom === 'podwyzszony') wynik = ilosc * 1950;
-                else if (poziom === 'najwyzszy') wynik = ilosc * 2250;
+                wynik = ilosc * 2000;
             }
             return wynik;
         }
 
         // Funkcja obliczająca wynik dla drzwi
-        function calculateDrzwi(ilosc, poziom) {
+        function calculateDrzwi(ilosc) {
             let wynik = 0;
-            if (poziom === 'najnizszy') wynik = ilosc * 4800;
-            else if (poziom === 'podwyzszony') wynik = ilosc * 5200;
-            else if (poziom === 'najwyzszy') wynik = ilosc * 6000;
+            wynik = ilosc * 5333;
             return wynik;
         }
 
@@ -294,19 +218,19 @@
                 const oknaIlosc = document.getElementById(`okna-ilosc-${i}`);
                 const drzwiIlosc = document.getElementById(`drzwi-ilosc-${i}`);
 
-                if (usluga && usluga.value && poziom && poziom.value) {
+                if (usluga && usluga.value) {
                     let wynik = 0;
 
                     if (usluga.value === 'ocieplenie_stropu' && metraz && metraz.value) {
-                        wynik = calculateOcieplenieStropu(parseFloat(metraz.value), poziom.value);
+                        wynik = calculateOcieplenieStropu(parseFloat(metraz.value));
                     } else if (usluga.value === 'ocieplenie_dachu' && metraz && metraz.value) {
-                        wynik = calculateOcieplenieDachu(parseFloat(metraz.value), poziom.value);
+                        wynik = calculateOcieplenieDachu(parseFloat(metraz.value));
                     } else if (usluga.value === 'ocieplenie_scian' && metraz && metraz.value) {
-                        wynik = calculateOcieplenieScian(parseFloat(metraz.value), poziom.value);
+                        wynik = calculateOcieplenieScian(parseFloat(metraz.value));
                     } else if (usluga.value === 'okna' && oknaTyp && oknaTyp.value && oknaIlosc && oknaIlosc.value) {
-                        wynik = calculateOkna(parseInt(oknaIlosc.value), oknaTyp.value, poziom.value);
+                        wynik = calculateOkna(parseInt(oknaIlosc.value), oknaTyp.value);
                     } else if (usluga.value === 'drzwi' && drzwiIlosc && drzwiIlosc.value) {
-                        wynik = calculateDrzwi(parseInt(drzwiIlosc.value), poziom.value);
+                        wynik = calculateDrzwi(parseInt(drzwiIlosc.value));
                     }
 
                     // Aktualizowanie wartości dla danego wiersza i sumy
@@ -323,4 +247,3 @@
 
 </body>
 </html>
-
