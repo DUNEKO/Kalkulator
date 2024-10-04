@@ -18,6 +18,7 @@
         <!-- Pierwszy wiersz formularza -->
         <div class="form-container" id="row-0">
             <span class="remove-btn" onclick="removeRow(0)">−</span>
+            
             <!-- Rodzaj usługi -->
             <label for="usluga-0">Rodzaj usługi:</label>
             <select id="usluga-0" name="usluga" onchange="toggleFields(0)">
@@ -28,13 +29,13 @@
                 <option value="okna">Okna</option>
                 <option value="drzwi">Drzwi</option>
             </select>
-
+        
             <!-- Metraż -->
             <div id="metraz_row-0" class="hidden">
                 <label for="metraz-0">Metraż (m²):</label>
                 <input type="number" id="metraz-0" name="metraz" placeholder="Podaj metraż">
             </div>
-
+        
             <!-- Typ okna -->
             <div id="okna_typ_row-0" class="hidden">
                 <label for="okna-typ-0">Typ okna:</label>
@@ -45,18 +46,22 @@
                     <option value="potrojne">Potrójne rozwierno-uchylne</option>
                 </select>
             </div>
-
+        
             <!-- Ilość okien -->
             <div id="okna_ilosc_row-0" class="hidden">
                 <label for="okna-ilosc-0">Ilość okien:</label>
                 <input type="number" id="okna-ilosc-0" placeholder="Podaj ilość okien">
             </div>
-
+        
             <!-- Ilość drzwi -->
             <div id="drzwi_ilosc_row-0" class="hidden">
                 <label for="drzwi-ilosc-0">Ilość drzwi:</label>
                 <input type="number" id="drzwi-ilosc-0" placeholder="Podaj ilość drzwi">
             </div>
+        
+            <!-- Nowy element na wynik -->
+            <div class="result" id="result-row-0"></div>
+        </div>        
         </div>
     </div>
 
@@ -108,52 +113,56 @@
         }
 
         // Funkcja do dodawania nowego wiersza
-        document.getElementById('addRow').addEventListener('click', function () {
-            const formRows = document.getElementById('form-rows');
-            const newRow = document.createElement('div');
-            newRow.classList.add('form-container');
-            newRow.id = `row-${rowCount}`;
-            newRow.innerHTML = `
-                <span class="remove-btn" onclick="removeRow(${rowCount})">−</span>
-                <label for="usluga-${rowCount}">Rodzaj usługi:</label>
-                <select id="usluga-${rowCount}" name="usluga" onchange="toggleFields(${rowCount})">
-                    <option value="">-- Wybierz --</option>
-                    <option value="ocieplenie_stropu">Ocieplenie stropu</option>
-                    <option value="ocieplenie_dachu">Ocieplenie dachu</option>
-                    <option value="ocieplenie_scian">Ocieplenie ścian zewnętrznych</option>
-                    <option value="okna">Okna</option>
-                    <option value="drzwi">Drzwi</option>
-                </select>
+document.getElementById('addRow').addEventListener('click', function () {
+    const formRows = document.getElementById('form-rows');
+    const newRow = document.createElement('div');
+    newRow.classList.add('form-container');
+    newRow.id = `row-${rowCount}`;
+    newRow.innerHTML = `
+        <span class="remove-btn" onclick="removeRow(${rowCount})">−</span>
+        <label for="usluga-${rowCount}">Rodzaj usługi:</label>
+        <select id="usluga-${rowCount}" name="usluga" onchange="toggleFields(${rowCount})">
+            <option value="">-- Wybierz --</option>
+            <option value="ocieplenie_stropu">Ocieplenie stropu</option>
+            <option value="ocieplenie_dachu">Ocieplenie dachu</option>
+            <option value="ocieplenie_scian">Ocieplenie ścian zewnętrznych</option>
+            <option value="okna">Okna</option>
+            <option value="drzwi">Drzwi</option>
+        </select>
 
-                <div id="metraz_row-${rowCount}" class="hidden">
-                    <label for="metraz-${rowCount}">Metraż (m²):</label>
-                    <input type="number" id="metraz-${rowCount}" name="metraz" placeholder="Podaj metraż">
-                </div>
+        <div id="metraz_row-${rowCount}" class="hidden">
+            <label for="metraz-${rowCount}">Metraż (m²):</label>
+            <input type="number" id="metraz-${rowCount}" name="metraz" placeholder="Podaj metraż">
+        </div>
 
-                <div id="okna_typ_row-${rowCount}" class="hidden">
-                    <label for="okna-typ-${rowCount}">Typ okna:</label>
-                    <select id="okna-typ-${rowCount}">
-                        <option value="">-- Wybierz typ okna --</option>
-                        <option value="pojedyncze">Pojedyncze rozwierno-uchylne</option>
-                        <option value="podwojne">Podwójne rozwierno-uchylne</option>
-                        <option value="potrojne">Potrójne rozwierno-uchylne</option>
-                    </select>
-                </div>
+        <div id="okna_typ_row-${rowCount}" class="hidden">
+            <label for="okna-typ-${rowCount}">Typ okna:</label>
+            <select id="okna-typ-${rowCount}">
+                <option value="">-- Wybierz typ okna --</option>
+                <option value="pojedyncze">Pojedyncze rozwierno-uchylne</option>
+                <option value="podwojne">Podwójne rozwierno-uchylne</option>
+                <option value="potrojne">Potrójne rozwierno-uchylne</option>
+            </select>
+        </div>
 
-                <div id="okna_ilosc_row-${rowCount}" class="hidden">
-                    <label for="okna-ilosc-${rowCount}">Ilość okien:</label>
-                    <input type="number" id="okna-ilosc-${rowCount}" placeholder="Podaj ilość okien">
-                </div>
+        <div id="okna_ilosc_row-${rowCount}" class="hidden">
+            <label for="okna-ilosc-${rowCount}">Ilość okien:</label>
+            <input type="number" id="okna-ilosc-${rowCount}" placeholder="Podaj ilość okien">
+        </div>
 
-                <div id="drzwi_ilosc_row-${rowCount}" class="hidden">
-                    <label for="drzwi-ilosc-${rowCount}">Ilość drzwi:</label>
-                    <input type="number" id="drzwi-ilosc-${rowCount}" placeholder="Podaj ilość drzwi">
-                </div>
-            `;
+        <div id="drzwi_ilosc_row-${rowCount}" class="hidden">
+            <label for="drzwi-ilosc-${rowCount}">Ilość drzwi:</label>
+            <input type="number" id="drzwi-ilosc-${rowCount}" placeholder="Podaj ilość drzwi">
+        </div>
 
-            formRows.appendChild(newRow);
-            rowCount++;
-        });
+        <!-- Nowy element na wynik -->
+        <div class="result" id="result-row-${rowCount}"></div>
+    `;
+
+    formRows.appendChild(newRow);
+    rowCount++;
+});
+
 
          // Funkcja do usuwania wiersza
          function removeRow(rowId) {
@@ -208,41 +217,51 @@
 
         // Funkcja do przeliczania wszystkich wierszy
         function calculateAll() {
-            totalSum = 0;
+    totalSum = 0;
 
-            for (let i = 0; i < rowCount; i++) {
-                const usluga = document.getElementById(`usluga-${i}`);
-                const metraz = document.getElementById(`metraz-${i}`);
-                const poziom = document.getElementById(`poziom-${i}`);
-                const oknaTyp = document.getElementById(`okna-typ-${i}`);
-                const oknaIlosc = document.getElementById(`okna-ilosc-${i}`);
-                const drzwiIlosc = document.getElementById(`drzwi-ilosc-${i}`);
+    for (let i = 0; i < rowCount; i++) {
+        const usluga = document.getElementById(`usluga-${i}`);
+        const metraz = document.getElementById(`metraz-${i}`);
+        const oknaTyp = document.getElementById(`okna-typ-${i}`);
+        const oknaIlosc = document.getElementById(`okna-ilosc-${i}`);
+        const drzwiIlosc = document.getElementById(`drzwi-ilosc-${i}`);
 
-                if (usluga && usluga.value) {
-                    let wynik = 0;
+        if (usluga && usluga.value) {
+            let wynik = 0;
 
-                    if (usluga.value === 'ocieplenie_stropu' && metraz && metraz.value) {
-                        wynik = calculateOcieplenieStropu(parseFloat(metraz.value));
-                    } else if (usluga.value === 'ocieplenie_dachu' && metraz && metraz.value) {
-                        wynik = calculateOcieplenieDachu(parseFloat(metraz.value));
-                    } else if (usluga.value === 'ocieplenie_scian' && metraz && metraz.value) {
-                        wynik = calculateOcieplenieScian(parseFloat(metraz.value));
-                    } else if (usluga.value === 'okna' && oknaTyp && oknaTyp.value && oknaIlosc && oknaIlosc.value) {
-                        wynik = calculateOkna(parseInt(oknaIlosc.value), oknaTyp.value);
-                    } else if (usluga.value === 'drzwi' && drzwiIlosc && drzwiIlosc.value) {
-                        wynik = calculateDrzwi(parseInt(drzwiIlosc.value));
-                    }
-
-                    // Aktualizowanie wartości dla danego wiersza i sumy
-                    if (wynik) {
-                        rowValues[i] = wynik;
-                        totalSum += wynik;
-                    }
-                }
+            if (usluga.value === 'ocieplenie_stropu' && metraz && metraz.value) {
+                wynik = calculateOcieplenieStropu(parseFloat(metraz.value));
+            } else if (usluga.value === 'ocieplenie_dachu' && metraz && metraz.value) {
+                wynik = calculateOcieplenieDachu(parseFloat(metraz.value));
+            } else if (usluga.value === 'ocieplenie_scian' && metraz && metraz.value) {
+                wynik = calculateOcieplenieScian(parseFloat(metraz.value));
+            } else if (usluga.value === 'okna' && oknaTyp && oknaTyp.value && oknaIlosc && oknaIlosc.value) {
+                wynik = calculateOkna(parseInt(oknaIlosc.value), oknaTyp.value);
+            } else if (usluga.value === 'drzwi' && drzwiIlosc && drzwiIlosc.value) {
+                wynik = calculateDrzwi(parseInt(drzwiIlosc.value));
             }
 
-            document.getElementById('wynik').value = totalSum.toFixed(2);
+            // Aktualizowanie wartości dla danego wiersza i sumy
+            if (wynik) {
+                rowValues[i] = wynik;
+                totalSum += wynik;
+
+                // Wyświetlenie wyniku w odpowiednim elemencie
+                document.getElementById(`result-row-${i}`).textContent = `${wynik.toFixed(2)} zł`;
+            } else {
+                document.getElementById(`result-row-${i}`).textContent = '';
+            }
+        } else {
+            document.getElementById(`result-row-${i}`).textContent = '';
         }
+    }
+
+    // Możesz dodać kod do aktualizacji całkowitej sumy, jeśli masz odpowiedni element w HTML.
+    // Na przykład:
+    document.getElementById('total-sum').textContent = `Całkowity koszt: ${totalSum.toFixed(2)} zł`;
+}
+
+
     </script>
 
 </body>
